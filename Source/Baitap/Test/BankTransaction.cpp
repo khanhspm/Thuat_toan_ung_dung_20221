@@ -32,12 +32,12 @@ int main(){
         cin >> type;
         if(type == "#") continue;
         totalTrans++;
-        string from_account, to_account, money, time_point, ATM;
-        cin >> from_account >> to_account >> money >> time_point >> ATM;
+        string from_account, to_account, time_point, ATM;
+        int money;
+        cin >> from_account >> to_account; cin >> money; cin >> time_point >> ATM;
         insertAccount(from_account);
-        int z = atoi(money.c_str());
-        totalMoney += z;
-        totalMoneyTrans[from_account] += z;
+        totalMoney += money;
+        totalMoneyTrans[from_account] += money;
     }while(type != "#");
 
 // Thực thi
