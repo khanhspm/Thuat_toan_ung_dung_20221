@@ -1,62 +1,37 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
+const int MAXN = 100005;
 int n;
-int a[], b[], c[];
+pair<int, int> segs[MAXN];
 
-void swap(int &x, int &y){
-    int t = x;
-    x = y; 
-    y = t;
+// Hàm so sánh 2 đoạn thẳng, dùng để sắp xếp mảng segs theo thứ tự tăng dần của điểm kết thúc
+bool cmp(pair<int, int> a, pair<int, int> b) {
+    return a.second < b.second;
 }
 
-int partition (int arr[], int low, int high)
-{
-    int pivot = arr[high];    // khai báo phần tử đánh dâu pivot
-    int left = low;   //khai báo biến bên trái
-    int right = high - 1; //khai báo biến bên phải
-    while(true){
-        while(left <= right && arr[left] < pivot) left++; // tìm phần tử >= phần tử pivot trong mảng
-        while(right >= left && arr[right] > pivot) right--; // tìm phần tử <= phần tử pivot trong mảng
-        if (left >= right) break; // sau khi duyệt xong thì thoát khỏi vòng lặp
-        swap(arr[left], arr[right]); // nếu chưa xong thì sử dụng hàm swap() để tráo đổi.
-        swap(a[left],b[left]);
-        left++; // Vì left hiện tại đã xét, nên cần tăng
-        right--; // Vì right hiện tại đã xét, nên cần giảm
+int main() {
+    // Đọc dữ liệu vào
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        int a, b;
+        cin >> a >> b;
+        segs[i] = {a, b};
     }
-    swap(arr[left], arr[high]);
-    return left; // Trả về chỉ số sẽ dùng để chia đôi mảng
-}
-  
-/* Hàm thực hiện giải thuật quick sort */
-void quickSort(int arr[], int low, int high)
-{
-    if (low < high)
-    {
-        // index là chỉ số nơi phần tử này đã đứng đúng vị trí và đây là phần tử chia mảng làm 2 mảng con trái & phải 
-        int index = partition(arr, low, high);
-  
-        // Gọi đệ quy sắp xếp 2 mảng con trái và phải
-        quickSort(arr, low, index - 1);
-        quickSort(arr, index + 1, high);
-    }
-}
 
-void DisSeg (int a1[], int a2[], int a3[]){
-    for(int i = 0; i < n; i++){
-        if(a1[i] == a[0]){
-            for(int j = 0; j < n; j++){
-                
-            }
+    // Sắp xếp các đoạn thẳng theo thứ tự tăng dần của điểm kết thúc
+    sort(segs, segs + n, cmp);
+
+    // Dùng phương pháp chọn lựa tham lam để tìm tập con các đoạn thẳng không giao nhau
+    int res = 0, last = -1;
+    for (int i = 0; i < n; i++) {
+        if (segs[i].first > last) {
+            last = segs[i].second;
+            res++;
         }
     }
-}
 
-int main(){
-    cin >> n;
-    for(int i = 0; i < n; i++){
-        cin >> a[i] >> b[i];
-        c[i] = b[i] = a[i];
-    }
-    quickSort(c, 0, n);
+    // In ra kết quả
+    cout << res << endl;
+    return 0;
 }

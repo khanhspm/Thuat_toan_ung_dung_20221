@@ -1,54 +1,34 @@
-#include <iostream>
-#include <cstring>
-#include <cmath>
+#include <bits/stdc++.h>
 using namespace std;
 
-const int INF = 1e9;
+const int N = 20;
+int n, dist[N][N], dp[1 << N][N];
+
+int tsp(int mask, int pos) {
+    if (mask == (1 << n) - 1) return dist[pos][0]; // đã đi qua hết các thành phố
+    if (dp[mask][pos] != -1) return dp[mask][pos]; // đã tính toán trước đó
+
+    int ans = INT_MAX;
+    for (int city = 0; city < n; city++) {
+        if (mask & (1 << city)) continue; // thành phố đã đi qua rồi
+        int newMask = mask | (1 << city); // đánh dấu thành phố đã đi qua
+        int subproblem = dist[pos][city] + tsp(newMask, city); // tính toán cho bài toán con
+        ans = min(ans, subproblem);
+    }
+
+    return dp[mask][pos] = ans; // lưu kết quả tính toán
+}
 
 int main() {
-    int n;
     cin >> n;
-
-    int dist[n+1][n+1];
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             cin >> dist[i][j];
         }
     }
 
-    int dp[n+1][1 << n];
-    memset(dp, -1, sizeof(dp)); // Khởi tạo tất cả giá trị thành -1
-    for (int i = 2; i <= n; i++) {
-        dp[i][(1 << i)-2] = dist[1][i]; // Đi qua các đỉnh trừ i
-    }
-
-    for (int k = 3; k <= n; k++) { // Kích thước tập S
-        for (int S = 0; S < (1 << n); S++) {
-            if (!(S & (1 << (k-1)))) continue; // Tập S chưa chứa đỉnh k
-            for (int i = 2; i <= n; i++) {
-                if (!(S & (1 << (i-1)))) continue; // Tập S chứa đỉnh i
-                for (int j = 2; j <= n; j++) {
-                    if ((S & (1 << (j-1))) || (i == j)) continue; // Tập S chưa chứa đỉnh j và i khác j
-                    if (dp[i][S] != -1) { // Nếu có thể đi tới đỉnh i
-                        int new_dist = dp[i][S] + dist[i][j];
-                        int new_S = S | (1 << (j-1));
-                        if (dp[j][new_S] == -1 || dp[j][new_S] > new_dist) {
-                            dp[j][new_S] = new_dist;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    int ans = INF;
-    for (int i = 2; i <= n; i++) {
-        if (dp[i][(1 << n)-1] != -1) {
-            ans = min(ans, dp[i][(1 << n)-1] + dist[i][1]);
-        }
-    }
-
-    cout << ans << endl;
+    memset(dp, -1, sizeof(dp)); // khởi tạo dp
+    cout << tsp(1, 0) << endl; // tính toán và in ra kết quả
 
     return 0;
 }
