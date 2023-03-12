@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "e:/Dee/Thuat_toan_ung_dung_20221/Source/Lab",
-      "program": "e:/Dee/Thuat_toan_ung_dung_20221/Source/Lab/build/Debug/outDebug",
+      "cwd": "e:/Dee/Thuat_toan_ung_dung_20221",
+      "program": "e:/Dee/Thuat_toan_ung_dung_20221/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
